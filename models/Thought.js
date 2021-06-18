@@ -14,7 +14,8 @@ const dateFormat = require('../utils/dateFormat');
  },
  username: {
      type: String,
-     required: true
+     required: true,
+     trim: true   
  },
  createdAt: {
      type: Date,
@@ -47,7 +48,8 @@ const thoughtSchema = new Schema({
     },
     username: {
         type: String,
-        required: true 
+        required: true ,
+        trim: true 
     },
     reactions:  [reactionSchema]
     
