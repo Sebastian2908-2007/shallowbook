@@ -4,6 +4,12 @@ const userController = {
   // get all users
   getAllUser(req,res) {
       User.find({})
+      .populate({
+          path: 'thoughts',
+          select:'-__v'
+      })
+      .select('-__v')
+      .sort({_id: -1})
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
           console.log(err);
@@ -14,6 +20,11 @@ const userController = {
   // get one user by the id
   getUserById({params}, res) {
       User.findOne({_id: params.id})
+      .populate({
+          path: 'thoughts',
+          select: '-__v' 
+      })
+      .select('-__v')
       .then(dbUserData => {
           // if no user found 404
           if(!dbUserData) {
@@ -58,10 +69,36 @@ const userController = {
             res.json(dbUserData);
         })
         .catch(err => res.status(404).json(err));
-    }
+    },
+    addFriends( req, res) {
+         
+
+  console.log( req.params)
+          
+        User.findOneAndUpdate(
+            {_id: req.params.userId},
+            
+            {$addToSet:  {friends: req.params.frienId } },
+            {new: true}
+        )
+    
+  
+    
+        .then(dbUserData => {
+            if(!dbUserData) {
+                res.status(404).json({message: 'no user found with this id'})
+                return;
+            }
+            res.json(dbUserData)
+            
+        })
+        
+        .catch(err => res.json(err));
+    },
+   
 
 
 
 };
 
-module.exports = userController;
+module.exports = userController;  /**60cc4aa68117a0525cac834f */

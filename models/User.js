@@ -1,5 +1,8 @@
 const {Schema, model} =require('mongoose');
 
+
+
+
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -28,7 +31,7 @@ const UserSchema = new Schema({
     friends: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User' 
         }
     ]
 },
@@ -43,11 +46,11 @@ const UserSchema = new Schema({
 
 // get total length of user friends
 UserSchema.virtual('friendCount').get(function() {
-return this.friends.reduce((total, friends) => total + friends.length + 1, 0);
+return this.friends.length
 });
 
 UserSchema.virtual('thoughtCount').get(function() {
-    return this.thoughts.length;
+    return this.thoughts.reduce((total,thought) => total + thought.reactions.length + 1, 0 );
 });
 
 // creat user model using userSchema
